@@ -1,0 +1,126 @@
+<!-- nav.html: Uniform, polished, responsive, and collapsible navigation bar for all pages -->
+<header class="w-full bg-white dark:bg-gray-900 shadow-lg fixed top-0 left-0 z-50">
+  <div class="max-w-4xl mx-auto flex justify-between items-center py-4 px-6">
+    <a href="/" class="text-2xl font-bold text-blue-700 dark:text-blue-300 flex items-center gap-2">
+      <i data-lucide="check-circle" class="w-6 h-6"></i>To-Do List
+    </a>
+    <nav class="nav-bar">
+      <a href="/dashboard" class="nav-link"><i data-lucide="bar-chart-3" class="w-5 h-5"></i>Dashboard</a>
+      <a href="/calendar" class="nav-link"><i data-lucide="calendar" class="w-5 h-5"></i>Calendar</a>
+      <a href="/notes" class="nav-link"><i data-lucide="file-text" class="w-5 h-5"></i>Notes</a>
+      <a href="/history" class="nav-link"><i data-lucide="history" class="w-5 h-5"></i>History</a>
+      <a href="/settings" class="nav-link"><i data-lucide="settings" class="w-5 h-5"></i>Settings</a>
+    </nav>
+    <!-- Mobile Hamburger -->
+    <button id="nav-toggle" class="md:hidden text-blue-700 dark:text-blue-300 focus:outline-none" aria-label="Open menu" style="display: block;">
+      <i data-lucide="menu" class="w-8 h-8"></i>
+    </button>
+  </div>
+  <!-- Mobile Nav Drawer -->
+  <div id="mobile-nav" class="fixed top-0 left-0 w-full h-full bg-black bg-opacity-40 z-50 hidden">
+    <div class="bg-white dark:bg-gray-900 w-64 h-full shadow-2xl p-8 flex flex-col gap-2 absolute right-0 top-0">
+      <button id="nav-close" class="self-end mb-4 text-blue-700 dark:text-blue-300 focus:outline-none" aria-label="Close menu">
+        <i data-lucide="x" class="w-8 h-8"></i>
+      </button>
+      <a href="/dashboard" class="nav-link-mobile"><i data-lucide="bar-chart-3" class="w-5 h-5"></i>Dashboard</a>
+      <a href="/calendar" class="nav-link-mobile"><i data-lucide="calendar" class="w-5 h-5"></i>Calendar</a>
+      <a href="/notes" class="nav-link-mobile"><i data-lucide="file-text" class="w-5 h-5"></i>Notes</a>
+      <a href="/history" class="nav-link-mobile"><i data-lucide="history" class="w-5 h-5"></i>History</a>
+      <a href="/settings" class="nav-link-mobile"><i data-lucide="settings" class="w-5 h-5"></i>Settings</a>
+    </div>
+  </div>
+  <style>
+    .nav-bar {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 1.25rem;
+      flex: 1;
+    }
+    .nav-link {
+      color: #2563eb;
+      transition: color 0.2s, background 0.2s, box-shadow 0.2s;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+      border-radius: 0.5rem;
+      padding: 0.5rem 1rem;
+      margin: 0;
+    }
+    .nav-link:hover, .nav-link:focus {
+      color: #fff;
+      background: linear-gradient(90deg, #2563eb 60%, #60a5fa 100%);
+      box-shadow: 0 2px 8px 0 rgba(37,99,235,0.10);
+      text-decoration: none;
+    }
+    .dark .nav-link {
+      color: #93c5fd;
+    }
+    .dark .nav-link:hover, .dark .nav-link:focus {
+      color: #fff;
+      background: linear-gradient(90deg, #1e293b 60%, #2563eb 100%);
+      box-shadow: 0 2px 8px 0 rgba(37,99,235,0.20);
+    }
+    .nav-link-mobile {
+      color: #2563eb;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      border-radius: 0.5rem;
+      padding: 0.75rem 1.25rem;
+      margin: 0.25rem 0;
+      transition: background 0.2s, color 0.2s;
+    }
+    .nav-link-mobile:hover, .nav-link-mobile:focus {
+      background: #e0e7ff;
+      color: #1e40af;
+      text-decoration: none;
+    }
+    .dark .nav-link-mobile {
+      color: #93c5fd;
+    }
+    .dark .nav-link-mobile:hover, .dark .nav-link-mobile:focus {
+      background: #1e293b;
+      color: #fff;
+    }
+    @media (max-width: 767px) {
+      .nav-bar { display: none !important; }
+      #nav-toggle { display: block !important; }
+      #mobile-nav { display: block; }
+    }
+    @media (min-width: 768px) {
+      #mobile-nav { display: none !important; }
+      #nav-toggle { display: none !important; }
+      .nav-bar { display: flex !important; }
+    }
+  </style>
+  <script>
+    function setupMobileNav() {
+      const navToggle = document.getElementById('nav-toggle');
+      const mobileNav = document.getElementById('mobile-nav');
+      const navClose = document.getElementById('nav-close');
+      if (navToggle && mobileNav && navClose) {
+        navToggle.onclick = function(e) {
+          e.stopPropagation();
+          mobileNav.classList.remove('hidden');
+        };
+        navClose.onclick = function(e) {
+          e.stopPropagation();
+          mobileNav.classList.add('hidden');
+        };
+        mobileNav.onclick = function(e) {
+          if (e.target === mobileNav) {
+            mobileNav.classList.add('hidden');
+          }
+        };
+      }
+    }
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', setupMobileNav);
+    } else {
+      setupMobileNav();
+    }
+  </script>
+</header>

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" class="">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Task</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script defer src="/static/main.js"></script>
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            colors: {
+              primary: '#2563eb',
+              accent: '#fbbf24',
+            }
+          }
+        }
+      }
+    </script>
+    <style>
+      .transition-all { transition: all 0.2s; }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-blue-50 to-blue-100 dark:from-gray-900 dark:to-gray-800 min-h-screen">
+    <div class="max-w-lg mx-auto mt-16 bg-white dark:bg-gray-900 p-10 rounded-2xl shadow-2xl border border-blue-100 dark:border-gray-800">
+        <div class="flex justify-between items-center mb-8">
+            <h2 class="text-3xl font-extrabold text-blue-700 dark:text-blue-300 flex items-center gap-2">
+                <i data-lucide="edit-3" class="w-7 h-7 text-blue-500 dark:text-blue-300"></i>
+                Edit Task
+            </h2>
+            <label class="flex items-center gap-2 cursor-pointer select-none">
+                <i data-lucide="moon" class="w-5 h-5 text-gray-400 dark:text-yellow-300"></i>
+                <input id="dark-toggle" type="checkbox" class="toggle toggle-sm accent-blue-600">
+            </label>
+        </div>
+        <form action="/edit/{{ task_id }}" method="post" class="space-y-5">
+            <input type="text" name="task" value="{{ task.task }}" required class="w-full px-4 py-3 border border-gray-300 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300 text-lg transition-all bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100">
+            <input type="text" name="category" value="{{ task.category }}" placeholder="Category (optional)" class="w-full px-4 py-3 border border-gray-300 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300 text-lg transition-all bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100">
+            <input type="date" name="due_date" value="{{ task.due_date.strftime('%Y-%m-%d') if task.due_date else '' }}" class="w-full px-4 py-3 border border-gray-300 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-300 text-lg transition-all bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100">
+            <select name="repeat_interval" class="w-full px-4 py-3 border border-gray-300 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-300 text-lg transition-all bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100">
+                <option value="" {% if not task.repeat_interval %}selected{% endif %}>No Repeat</option>
+                <option value="daily" {% if task.repeat_interval == 'daily' %}selected{% endif %}>Daily</option>
+                <option value="weekly" {% if task.repeat_interval == 'weekly' %}selected{% endif %}>Weekly</option>
+                <option value="biweekly" {% if task.repeat_interval == 'biweekly' %}selected{% endif %}>Biweekly</option>
+                <option value="monthly" {% if task.repeat_interval == 'monthly' %}selected{% endif %}>Monthly</option>
+                <option value="yearly" {% if task.repeat_interval == 'yearly' %}selected{% endif %}>Yearly</option>
+            </select>
+            <select name="priority" class="w-full px-4 py-3 border border-gray-300 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-300 text-lg transition-all bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100">
+                <option value="High" {% if task.priority == 'High' %}selected{% endif %}>High Priority</option>
+                <option value="Medium" {% if task.priority == 'Medium' or not task.priority %}selected{% endif %}>Medium Priority</option>
+                <option value="Low" {% if task.priority == 'Low' %}selected{% endif %}>Low Priority</option>
+            </select>
+            <select name="list_name" class="w-full px-4 py-3 border border-gray-300 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-300 text-lg transition-all bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100">
+                <option value="" {% if not task.list_name %}selected{% endif %}>No List</option>
+                {% for l in lists %}
+                    <option value="{{ l }}" {% if task.list_name == l %}selected{% endif %}>{{ l }}</option>
+                {% endfor %}
+            </select>
+            <div class="flex gap-3 mt-6">
+                <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-lg font-semibold shadow transition-all flex items-center gap-1"><i data-lucide="save" class="w-5 h-5"></i>Save</button>
+                <a href="/" class="bg-gray-300 hover:bg-gray-400 text-gray-800 px-6 py-2 rounded-lg font-semibold shadow transition-all flex items-center gap-1"><i data-lucide="x" class="w-5 h-5"></i>Cancel</a>
+            </div>
+        </form>
+    </div>
+    <script>lucide.createIcons();</script>
+</body>
+</html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" class="">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notes</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
+    <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script defer src="/static/main.js"></script>
+    <script>lucide.createIcons();</script>
+</head>
+<body class="bg-gradient-to-br from-blue-50 to-blue-100 dark:from-gray-900 dark:to-gray-800 min-h-screen">
+    <!-- NAVIGATION BAR -->
+    {% include 'nav.html' %}
+    <main class="pt-28 pb-12">
+    <div class="max-w-2xl mx-auto p-8 bg-white dark:bg-gray-900 rounded-2xl shadow-2xl border border-blue-100 dark:border-gray-800 mt-8">
+        <h2 class="text-2xl font-bold mb-6 flex items-center gap-2 text-blue-700 dark:text-blue-300"><i data-lucide="file-text" class="w-6 h-6"></i> Notes</h2>
+        <form action="/notes" method="post">
+            <textarea id="note-editor" name="content" rows="12" placeholder="Type your notes, ideas, or journal entries here..." class="w-full p-4 border border-gray-300 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300 text-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 mb-4">{{ note_content|e }}</textarea>
+            <div class="mb-4">
+                <label for="task_id" class="block text-sm font-semibold text-gray-700 dark:text-gray-200 mb-2">Link to Task (optional):</label>
+                <select name="task_id" id="task_id" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100">
+                    <option value="">No Task</option>
+                    {% for t in all_tasks %}
+                        <option value="{{ t.id }}" {% if t.id == selected_task_id %}selected{% endif %}>{{ t.task }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold shadow transition-all">Save Note</button>
+        </form>
+        <div class="mt-8">
+            <h3 class="text-lg font-semibold mb-2 text-gray-700 dark:text-gray-200">Preview:</h3>
+            <div id="note-preview" class="prose dark:prose-invert max-w-none bg-blue-50 dark:bg-gray-800 p-4 rounded-lg border border-blue-100 dark:border-blue-800"></div>
+        </div>
+    </div>
+    </main>
+    <script>
+      var simplemde = new SimpleMDE({ element: document.getElementById("note-editor") });
+      function updatePreview() {
+        var markdown = simplemde.value();
+        document.getElementById('note-preview').innerHTML = marked.parse(markdown);
+      }
+      simplemde.codemirror.on("change", updatePreview);
+      updatePreview();
+    </script>
+</body>
+</html>

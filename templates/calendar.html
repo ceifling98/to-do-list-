@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" class="">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calendar View</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script defer src="/static/main.js"></script>
+    <script>lucide.createIcons();</script>
+    <style>
+      .fc { background: white; border-radius: 1rem; box-shadow: 0 4px 24px 0 #0001; }
+      .fc-toolbar-title { font-size: 1.5rem; font-weight: bold; color: #2563eb; }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-blue-50 to-blue-100 dark:from-gray-900 dark:to-gray-800 min-h-screen">
+    <!-- NAVIGATION BAR -->
+    {% include 'nav.html' %}
+    <main class="pt-28 pb-12">
+    <div class="max-w-4xl mx-auto p-8 bg-white dark:bg-gray-900 rounded-2xl shadow-2xl border border-blue-100 dark:border-gray-800 mb-12">
+        <h1 class="text-3xl font-extrabold text-blue-700 dark:text-blue-300 flex items-center gap-2 mb-8"><i data-lucide="calendar" class="w-8 h-8"></i>Calendar View</h1>
+        <div id="calendar"></div>
+    </div>
+    </main>
+    <script id="calendar-data" type="application/json">{{ calendar_events|tojson }}</script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const calendarEl = document.getElementById('calendar');
+        const events = JSON.parse(document.getElementById('calendar-data').textContent);
+        const calendar = new FullCalendar.Calendar(calendarEl, {
+            initialView: 'dayGridMonth',
+            headerToolbar: {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'dayGridMonth,timeGridWeek,timeGridDay'
+            },
+            events: events,
+            eventClick: function(info) {
+                window.location.href = '/task/' + info.event.id;
+            },
+            height: 650,
+            eventDisplay: 'block',
+            eventBackgroundColor: '#2563eb',
+            eventBorderColor: '#2563eb',
+            eventTextColor: '#fff',
+        });
+        calendar.render();
+    });
+    </script>
+</body>
+</html>

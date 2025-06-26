@@ -1,0 +1,52 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pyc
+*.pdb
+*.egg-info/
+.eggs/
+*.egg
+*.manifest
+*.spec
+
+# Flask
+instance/
+.webassets-cache
+
+# VS Code
+.vscode/
+
+# SQLite database
+*.db
+*.sqlite3
+
+# Environment
+.env
+.venv/
+venv/
+env/
+ENV/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Logs
+*.log
+
+# Node
+node_modules/
+
+# Misc
+*.bak
+*.swp
+*.swo
+
+# Exported files
+*.csv
+*.pdf
